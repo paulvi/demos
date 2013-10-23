@@ -5,67 +5,135 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Demos by Rijksmuseum</title>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Demos</h1>
-        <p>Example projects demonstrating usage of the Rijksmuseum API's</p>
+    <div class="container">
+
+      <div class="page-header">
+        <h1>Rijksmuseum API Demos</h1>
+        <p class="lead">Example projects demonstrating usage of the Rijksmuseum API's</p>
 
         <p class="view"><a href="https://github.com/Rijksmuseum/demos">View the Project on GitHub <small>Rijksmuseum/demos</small></a></p>
+      </div>
 
-
-        <ul>
-          <li><a href="https://github.com/Rijksmuseum/demos/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/Rijksmuseum/demos/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/Rijksmuseum/demos">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
       <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <h3>Example: loading a single tile</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+        <pre>
+          <code data-code="example1">
+          </code>
+        </pre>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+        <h4>result</h4>
+        <img class="tile" width=256 height=256>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/Rijksmuseum">Rijksmuseum</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+
+      
+
+      <section>
+        <h3>Example: loading all tiles in a zoomlevel</h3>
+
+        <pre>
+          <code data-code="example2">
+          </code>
+        </pre>
+
+        <h4>result</h4>
+        <div class="example2-container" style="position: relative;">
+        </div>
+        
+      </section>
+
     </div>
+
+
     <script src="javascripts/scale.fix.js"></script>
+    <script src="jquery-1.10.2.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     
+    <script id="example1" class="example">
+      
+      // convenience function to download the tiles info for a particular object.
+      // The objectNumber passed is the same as used in the Live Api.
+      // ex. the objectNumber for the Nightwatch is 'SK-C-5'.
+
+      function loadTiles(objectNumber, callback) {
+        return $.getJSON("https://q42imageserver.appspot.com/api/getTilesInfo?object_id=" + 
+          objectNumber.toUpperCase(), callback)
+      }
+
+
+      loadTiles("sk-c-5", function(data) {
+        // select a zoom level 
+        var level = data.levels[0];
+
+        // select a tile frome the zoom level
+        var tile= level.tiles[4];
+        
+        console.log("# of zoom levels:", data.levels.length);
+        console.log("tiles in this level: ", level.tiles.length);
+        console.log("loading tile: ", tile.url);        
+        $(".tile").attr("src", tile.url);
+      });
+    </script>
+
+    <script id="example2" class="example">
+      function loadTiles(objectNumber, callback) {
+        return $.getJSON("https://q42imageserver.appspot.com/api/getTilesInfo?object_id=" + 
+          objectNumber.toUpperCase(), callback)
+      }
+
+      loadTiles("sk-c-5", function(data) { 
+        var level = data.levels[0];
+        console.log("# of zoom levels:", data.levels.length);
+        console.log("tiles in this level: ", level.tiles.length);
+
+        // get the dimensions of the current zoomlevel in pixels:
+        console.log("dimensions:", level.width + " x " + level.height);
+        var $target = $(".example2-container");
+        $target.width(level.width/2);
+        $target.height(level.height/2);
+        
+        // determine the number of rows and columns
+        // tiles are always 512 pixels
+        // divide the width or height by 512 and round up to get het number of rows or columns:
+        var rows = Math.ceil(level.width / 512);
+        var columns = Math.ceil(level.height / 512);
+        console.log("rows:", rows, "columns:", columns);
+
+       
+        console.log(level);
+        for(var t=0 ; t<level.tiles.length ; t++)
+        {
+          var tile = level.tiles[t];
+          console.log(t, tile);
+          
+          var $img = $("<img>").css({
+            outline : "1px solid lime",
+            position: "absolute",
+            left: 256 * tile.x,
+            top: 256 * tile.y,
+            width: 256,
+            height: 256
+          }).attr("src", tile.url);
+
+          $target.append($img);
+        }
+
+      });
+    </script>
+
+    <script>
+      $("code").each(function(i,el){
+          $(el).text($("#"+$(el).data("code")).text());
+      })
+    </script>
   </body>
 </html>
