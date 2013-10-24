@@ -7,7 +7,34 @@
 
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="stylesheets/styles.css">
+
+  <link rel="stylesheet" disabled title="Default" href="styles/default.css">
+  <link rel="stylesheet"  title="Dark" href="styles/dark.css">
+  <link rel="stylesheet" disabled title="FAR" href="styles/far.css">
+  <link rel="stylesheet" disabled title="IDEA" href="styles/idea.css">
+  <link rel="stylesheet" disabled title="Sunburst" href="styles/sunburst.css">
+  <link rel="stylesheet" disabled title="Zenburn" href="styles/zenburn.css">
+  <link rel="stylesheet" disabled title="Visual Studio" href="styles/vs.css">
+  <link rel="stylesheet" disabled title="Ascetic" href="styles/ascetic.css">
+  <link rel="stylesheet" disabled title="Magula" href="styles/magula.css">
+  <link rel="stylesheet" disabled title="GitHub" href="styles/github.css">
+  <link rel="stylesheet" disabled title="Google Code" href="styles/googlecode.css">
+  <link rel="stylesheet" disabled title="Brown Paper" href="styles/brown_paper.css">
+  <link rel="stylesheet" disabled title="School Book" href="styles/school_book.css">
+  <link rel="stylesheet" disabled title="IR Black" href="styles/ir_black.css">
+  <link rel="stylesheet" disabled title="Solarized - Dark" href="styles/solarized_dark.css">
+  <link rel="stylesheet" disabled title="Solarized - Light" href="styles/solarized_light.css">
+  <link rel="stylesheet" disabled title="Arta" href="styles/arta.css">
+  <link rel="stylesheet" disabled title="Monokai" href="styles/monokai.css">
+  <link rel="stylesheet" disabled title="XCode" href="styles/xcode.css">
+  <link rel="stylesheet" disabled title="Pojoaque" href="styles/pojoaque.css">
+  <link rel="stylesheet" disabled title="Rainbow" href="styles/rainbow.css">
+  <link rel="stylesheet" disabled title="Tomorrow" href="styles/tomorrow.css">
+  <link rel="stylesheet" disabled title="Tomorrow Night" href="styles/tomorrow-night.css">
+  <link rel="stylesheet" disabled title="Tomorrow Night Bright" href="styles/tomorrow-night-bright.css">
+  <link rel="stylesheet" disabled title="Tomorrow Night Blue" href="styles/tomorrow-night-blue.css">
+  <link rel="stylesheet" disabled title="Tomorrow Night Eighties" href="styles/tomorrow-night-eighties.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -26,13 +53,16 @@
       <section>
         <h3>Example: loading a single tile</h3>
 
-        <pre>
-          <code data-code="example1">
-          </code>
+        <pre >
+          <code data-code="#example1"></code>
         </pre>
-
-        <h4>result</h4>
-        <img class="tile" width=256 height=256>
+        <div>
+          <button data-action="run" 
+            data-code="#example1" 
+            data-target="#singletile"
+            class="btn btn-primary">run this code</button>
+          </div>
+        <img id="singletile" class="tile target" width=256 height=256 style="background: #ddd;">
       </section>
 
       
@@ -41,12 +71,18 @@
         <h3>Example: loading all tiles in a zoomlevel</h3>
 
         <pre>
-          <code data-code="example2">
+          <code data-code="#example2">
           </code>
         </pre>
 
-        <h4>result</h4>
-        <div class="example2-container" style="position: relative;">
+        <div>
+        <button data-action="run" 
+          data-code="#example2" 
+          data-target="#example2-container"
+          class="btn btn-primary">run this code</button>
+        </div>
+        <div id="example2-container" class="example2-container target" 
+        style="position: relative; width: 442.75px; height: 360.25px; background: #ddd;">
         </div>
         
       </section>
@@ -54,86 +90,114 @@
     </div>
 
 
-    <script src="javascripts/scale.fix.js"></script>
+    <script src="js/scale.fix.js"></script>
     <script src="jquery-1.10.2.min.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/jquery.scrollintoview.min.js"></script>
+    
     <script src="bootstrap/js/bootstrap.min.js"></script>
     
-    <script id="example1" class="example">
-      
+    <script id="example1" type="example">
       // convenience function to download the tiles info for a particular object.
       // The objectNumber passed is the same as used in the Live Api.
       // ex. the objectNumber for the Nightwatch is 'SK-C-5'.
 
-      function loadTiles(objectNumber, callback) {
+      function loadTiles(objectNumber) {
         return $.getJSON("https://q42imageserver.appspot.com/api/getTilesInfo?object_id=" + 
-          objectNumber.toUpperCase(), callback)
+          objectNumber.toUpperCase())
       }
 
+      loadTiles("sk-c-5")
+        .done(function(data) {
+          // select a zoom level 
+          var level = data.levels[0];
 
-      loadTiles("sk-c-5", function(data) {
-        // select a zoom level 
-        var level = data.levels[0];
-
-        // select a tile frome the zoom level
-        var tile= level.tiles[4];
-        
-        console.log("# of zoom levels:", data.levels.length);
-        console.log("tiles in this level: ", level.tiles.length);
-        console.log("loading tile: ", tile.url);        
-        $(".tile").attr("src", tile.url);
-      });
+          // select a tile frome the zoom level
+          var tile= level.tiles[4];
+          
+          // set the src of the image to the url of the tile        
+          $("img.tile").attr("src", tile.url);
+        });
     </script>
 
-    <script id="example2" class="example">
-      function loadTiles(objectNumber, callback) {
+    <script id="example2" type="example">
+      function loadTiles(objectNumber) {
         return $.getJSON("https://q42imageserver.appspot.com/api/getTilesInfo?object_id=" + 
-          objectNumber.toUpperCase(), callback)
+          objectNumber.toUpperCase())
       }
 
-      loadTiles("sk-c-5", function(data) { 
-        var level = data.levels[0];
-        console.log("# of zoom levels:", data.levels.length);
-        console.log("tiles in this level: ", level.tiles.length);
-
-        // get the dimensions of the current zoomlevel in pixels:
-        console.log("dimensions:", level.width + " x " + level.height);
-        var $target = $(".example2-container");
-        $target.width(level.width/2);
-        $target.height(level.height/2);
-        
-        // determine the number of rows and columns
-        // tiles are always 512 pixels
-        // divide the width or height by 512 and round up to get het number of rows or columns:
-        var rows = Math.ceil(level.width / 512);
-        var columns = Math.ceil(level.height / 512);
-        console.log("rows:", rows, "columns:", columns);
-
-       
-        console.log(level);
-        for(var t=0 ; t<level.tiles.length ; t++)
-        {
-          var tile = level.tiles[t];
-          console.log(t, tile);
+      loadTiles("sk-c-5")
+        .done(function(data) { 
+          // First, select the desired level
+          var level = data.levels[0];
           
-          var $img = $("<img>").css({
-            outline : "1px solid lime",
-            position: "absolute",
-            left: 256 * tile.x,
-            top: 256 * tile.y,
-            width: 256,
-            height: 256
-          }).attr("src", tile.url);
+          // Let's make the container 1/4th of the real size of this level to make it easily fit on our page
+          var $target = $(".example2-container");
+          $target.width(level.width/4); 
+          $target.height(level.height/4);
+          
+          // Tile images are always 512 pixels, so determine the number of rows and columns
+          // by dividing the width or height of the whole zoomlevel by 512 and round up
+          var rows = Math.ceil(level.width / 512);
+          var columns = Math.ceil(level.height / 512);
 
-          $target.append($img);
-        }
-
-      });
+          // Loop through the tiles and display them one-by-one. Note that the tiles are not sorted!
+          for(var t=0 ; t<level.tiles.length ; t++)
+          {
+            var tile = level.tiles[t];
+            
+            // here we're scaling the tiles down from 512px to 128px, ie 1/4th
+            $("<img>").css({
+              outline : "1px solid lime",
+              position: "absolute",
+              left: 128 * tile.x,     
+              top: 128 * tile.y
+            })
+            .load(function() {
+              this.width = this.width/4;
+              this.height = this.height/4;
+              $target.append(this);
+            })
+            .attr("src", tile.url);
+          }
+        });
     </script>
 
     <script>
-      $("code").each(function(i,el){
-          $(el).text($("#"+$(el).data("code")).text());
+      $("code[data-code]").each(function(i,el){
+          $(el).text($($(el).data("code")).text());
       })
+
+      $("[data-action=run]").click(function(){
+        var $button = $(this);
+        eval ($($button.data("code")).text());
+        $button.attr('disabled', 'disabled').text("executing...");
+        
+        $($button.data("target")).scrollintoview(false);
+        setTimeout(function() {
+          $button.text("done");          
+          
+        },1000)
+      });
+    </script>
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script id="highlight-styles" type="template">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          Action <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div>
+    </script>
+    <script>
+      $("#highlight-styles").html()
     </script>
   </body>
 </html>
