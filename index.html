@@ -83,7 +83,7 @@
           class="btn btn-primary">run this code</button>
         </div>
         <div id="example2-container" class="example2-container target" 
-        style="position: relative; width: 442.75px; height: 360.25px; background: #ddd;">
+          style="position: relative; width: 442.75px; height: 360.25px; background: #ddd;">
         </div>
         
       </section>
@@ -98,18 +98,19 @@
         </pre>
 
         <div>
-        <form class="form-inline" role="form">
-         <div class="form-group">
-          <label class="sr-only" >Query</label>
-          <input id="query" type="search" class="form-control" placeholder="bijv 'nachtwacht'" />
-        </div>
-          <div class="form-group">
-          <button data-action="run" 
-            data-code="#example3" 
-            data-target="#example3-container"
-            class="btn btn-primary">run this code</button>
-        </form>
-        </div>
+          <form class="form-inline" role="form">
+            <div class="form-group">
+              <label class="sr-only" >Query</label>
+              <input id="query" type="search" class="form-control" placeholder="ex. 'nightwatch'" />
+            </div>
+            <div class="form-group">
+              <button data-action="run" 
+                data-code="#example3" 
+                data-target="#example3-container"
+                class="btn btn-primary">search</button>
+            </div>
+          </form>
+        
         </div>
         <table id="example3-container" class="example3-container target table-striped">
         </table>
@@ -126,16 +127,15 @@
     <script src="bootstrap/js/bootstrap.min.js"></script>
     
     <script id="example1" type="example">
-      // convenience function to download the tiles info for a particular object.
-      // The objectNumber passed is the same as used in the Live Api.
+      // download the tiles info for a particular object.
       // ex. the objectNumber for the Nightwatch is 'SK-C-5'.
-
-      function loadTiles(objectNumber) {
+      function loadTileInfo(objectNumber) {
         return $.getJSON("https://q42imageserver.appspot.com/api/getTilesInfo?object_id=" + 
           objectNumber.toUpperCase());
       }
 
-      loadTiles("sk-c-5")
+      // load them tiles
+      loadTileInfo("sk-c-5")
         .done(function(data) {
           // select a zoom level 
           var level = data.levels[0];
@@ -149,12 +149,15 @@
     </script>
 
     <script id="example2" type="example">
-      function loadTiles(objectNumber) {
+      // download the tiles info for a particular object.
+      // ex. the objectNumber for the Nightwatch is 'SK-C-5'.
+      function loadTileInfo(objectNumber) {
         return $.getJSON("https://q42imageserver.appspot.com/api/getTilesInfo?object_id=" + 
           objectNumber.toUpperCase());
       }
 
-      loadTiles("sk-c-5")
+      // load them tiles
+      loadTileInfo("sk-c-5")
         .done(function(data) { 
           // First, select the desired level
           var level = data.levels[0];
@@ -163,7 +166,8 @@
           var $target = $(".example2-container");
           $target.width(level.width/4); 
           $target.height(level.height/4);
-          
+          $target.empty();
+
           // Tile images are always 512 pixels, so determine the number of rows and columns
           // by dividing the width or height of the whole zoomlevel by 512 and round up
           var rows = Math.ceil(level.width / 512);
@@ -193,32 +197,44 @@
     </script>
 
     <script id="example3" type="example">
-    //https://www.rijksmuseum.nl/api/nl/collection?q=nachtwacht&key=__MASTER_KEY__
+      // search the collection using a JSONP call
       function search(query) {
         return $.ajax({ 
-          url :"https://www.rijksmuseum.nl/api/nl/collection?q=Q&key=fpGQTuED&format=jsonp".replace("Q", query),
+          url :"https://www.rijksmuseum.nl/api/en/collection?q=Q&key=fpGQTuED&format=jsonp".replace("Q", query),
             dataType : "jsonp",
             callback : "callback"
           });
       }
 
-      search($("#query"))
+      // creates a thumbnail image for the specified art object
+      function thumbnail(object) {
+        return $("<div>")
+          .addClass("thumb")
+          .css("background-image", "url(" + object.webImage.url.replace("s0", "s128") +")");
+      }
+
+      // fire the search query
+      search($("#query").val())
         .done(function(results) {
-            console.log(results);
+          $("#example3-container").empty();
+          
+          // create a row for each art object found
+          $.each(results.artObjects, function(index, object) {
+              
+            var row = $("#example3-container")[0].insertRow();
 
-            $.each(results.artObjects, function(key, object) {
-                console.log(object);
-                var row = $("#example3-container")[0].insertRow();
+            // make each row clickable, navigating to the relevant page on the Rijksmuseum website
+            $(row).click(function() {
+              document.location = object.links.web;
+            });
 
-                var fields = [$("<img>").attr("src", object.webImage.url.replace("s0", "s128")), object.title ];
-
-                $.each(fields, function(i, item) {
-                  $(row.insertCell(row.cells.length)).html(item);
-                });
-            })
+            // create the cells in the table
+            var columns = [object.objectNumber, thumbnail(object), object.title];
+            $.each(columns, function(i, item) {
+              $(row.insertCell(row.cells.length)).html(item);
+            });
+          })
         });
-
-
     </script>
 
     <script>
@@ -230,31 +246,17 @@
         evt.preventDefault();
         var $button = $(this);
         eval ($($button.data("code")).text());
-        $button.attr('disabled', 'disabled').text("executing...");
+        //$button.attr('disabled', 'disabled').text("executing...");
         
         $($button.data("target")).scrollintoview(false);
-        setTimeout(function() {
-          $button.text("done");          
+        // setTimeout(function() {
+        //   $button.text("done");          
           
-        },1000)
+        // },1000)
       });
     </script>
     <script src="js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script id="highlight-styles" type="template">
-      <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          Action <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li class="divider"></li>
-          <li><a href="#">Separated link</a></li>
-        </ul>
-      </div>
-    </script>
     <script>
       $("#highlight-styles").html()
     </script>
