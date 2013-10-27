@@ -9,32 +9,33 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="stylesheets/styles.css">
 
-  <link rel="stylesheet" disabled title="Default" href="styles/default.css">
-  <link rel="stylesheet"  title="Dark" href="styles/dark.css">
-  <link rel="stylesheet" disabled title="FAR" href="styles/far.css">
-  <link rel="stylesheet" disabled title="IDEA" href="styles/idea.css">
-  <link rel="stylesheet" disabled title="Sunburst" href="styles/sunburst.css">
-  <link rel="stylesheet" disabled title="Zenburn" href="styles/zenburn.css">
-  <link rel="stylesheet" disabled title="Visual Studio" href="styles/vs.css">
-  <link rel="stylesheet" disabled title="Ascetic" href="styles/ascetic.css">
-  <link rel="stylesheet" disabled title="Magula" href="styles/magula.css">
-  <link rel="stylesheet" disabled title="GitHub" href="styles/github.css">
-  <link rel="stylesheet" disabled title="Google Code" href="styles/googlecode.css">
-  <link rel="stylesheet" disabled title="Brown Paper" href="styles/brown_paper.css">
-  <link rel="stylesheet" disabled title="School Book" href="styles/school_book.css">
-  <link rel="stylesheet" disabled title="IR Black" href="styles/ir_black.css">
-  <link rel="stylesheet" disabled title="Solarized - Dark" href="styles/solarized_dark.css">
-  <link rel="stylesheet" disabled title="Solarized - Light" href="styles/solarized_light.css">
-  <link rel="stylesheet" disabled title="Arta" href="styles/arta.css">
-  <link rel="stylesheet" disabled title="Monokai" href="styles/monokai.css">
-  <link rel="stylesheet" disabled title="XCode" href="styles/xcode.css">
-  <link rel="stylesheet" disabled title="Pojoaque" href="styles/pojoaque.css">
-  <link rel="stylesheet" disabled title="Rainbow" href="styles/rainbow.css">
-  <link rel="stylesheet" disabled title="Tomorrow" href="styles/tomorrow.css">
-  <link rel="stylesheet" disabled title="Tomorrow Night" href="styles/tomorrow-night.css">
-  <link rel="stylesheet" disabled title="Tomorrow Night Bright" href="styles/tomorrow-night-bright.css">
-  <link rel="stylesheet" disabled title="Tomorrow Night Blue" href="styles/tomorrow-night-blue.css">
-  <link rel="stylesheet" disabled title="Tomorrow Night Eighties" href="styles/tomorrow-night-eighties.css">
+    <link rel="stylesheet" disabled title="Default" href="styles/default.css">
+    <link rel="stylesheet"  title="Dark" href="styles/dark.css">
+    <link rel="stylesheet" disabled title="FAR" href="styles/far.css">
+    <link rel="stylesheet" disabled title="IDEA" href="styles/idea.css">
+    <link rel="stylesheet" disabled title="Sunburst" href="styles/sunburst.css">
+    <link rel="stylesheet" disabled title="Zenburn" href="styles/zenburn.css">
+    <link rel="stylesheet" disabled title="Visual Studio" href="styles/vs.css">
+    <link rel="stylesheet" disabled title="Ascetic" href="styles/ascetic.css">
+    <link rel="stylesheet" disabled title="Magula" href="styles/magula.css">
+    <link rel="stylesheet" disabled title="GitHub" href="styles/github.css">
+    <link rel="stylesheet" disabled title="Google Code" href="styles/googlecode.css">
+    <link rel="stylesheet" disabled title="Brown Paper" href="styles/brown_paper.css">
+    <link rel="stylesheet" disabled title="School Book" href="styles/school_book.css">
+    <link rel="stylesheet" disabled title="IR Black" href="styles/ir_black.css">
+    <link rel="stylesheet" disabled title="Solarized - Dark" href="styles/solarized_dark.css">
+    <link rel="stylesheet" disabled title="Solarized - Light" href="styles/solarized_light.css">
+    <link rel="stylesheet" disabled title="Arta" href="styles/arta.css">
+    <link rel="stylesheet" disabled title="Monokai" href="styles/monokai.css">
+    <link rel="stylesheet" disabled title="XCode" href="styles/xcode.css">
+    <link rel="stylesheet" disabled title="Pojoaque" href="styles/pojoaque.css">
+    <link rel="stylesheet" disabled title="Rainbow" href="styles/rainbow.css">
+    <link rel="stylesheet" disabled title="Tomorrow" href="styles/tomorrow.css">
+    <link rel="stylesheet" disabled title="Tomorrow Night" href="styles/tomorrow-night.css">
+    <link rel="stylesheet" disabled title="Tomorrow Night Bright" href="styles/tomorrow-night-bright.css">
+    <link rel="stylesheet" disabled title="Tomorrow Night Blue" href="styles/tomorrow-night-blue.css">
+    <link rel="stylesheet" disabled title="Tomorrow Night Eighties" href="styles/tomorrow-night-eighties.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -45,7 +46,7 @@
 
       <div class="page-header">
         <h1>Rijksmuseum API Demos</h1>
-        <p class="lead">Example projects demonstrating usage of the Rijksmuseum API's</p>
+        <p class="lead">Code examples demonstrating usage of the Rijksmuseum API's</p>
 
         <p class="view"><a href="https://github.com/Rijksmuseum/demos">View the Project on GitHub <small>Rijksmuseum/demos</small></a></p>
       </div>
@@ -87,6 +88,33 @@
         
       </section>
 
+
+      <section>
+        <h3>Example: searching the collection</h3>
+
+        <pre>
+          <code data-code="#example3">
+          </code>
+        </pre>
+
+        <div>
+        <form class="form-inline" role="form">
+         <div class="form-group">
+          <label class="sr-only" >Query</label>
+          <input id="query" type="search" class="form-control" placeholder="bijv 'nachtwacht'" />
+        </div>
+          <div class="form-group">
+          <button data-action="run" 
+            data-code="#example3" 
+            data-target="#example3-container"
+            class="btn btn-primary">run this code</button>
+        </form>
+        </div>
+        </div>
+        <table id="example3-container" class="example3-container target table-striped">
+        </table>
+        
+      </section>
     </div>
 
 
@@ -104,7 +132,7 @@
 
       function loadTiles(objectNumber) {
         return $.getJSON("https://q42imageserver.appspot.com/api/getTilesInfo?object_id=" + 
-          objectNumber.toUpperCase())
+          objectNumber.toUpperCase());
       }
 
       loadTiles("sk-c-5")
@@ -123,7 +151,7 @@
     <script id="example2" type="example">
       function loadTiles(objectNumber) {
         return $.getJSON("https://q42imageserver.appspot.com/api/getTilesInfo?object_id=" + 
-          objectNumber.toUpperCase())
+          objectNumber.toUpperCase());
       }
 
       loadTiles("sk-c-5")
@@ -148,10 +176,11 @@
             
             // here we're scaling the tiles down from 512px to 128px, ie 1/4th
             $("<img>").css({
-              outline : "1px solid lime",
+              //outline : "1px solid lime",
+              "box-shadow" : "5px 5px 5px rgba(0,0,0,0.5)",
               position: "absolute",
-              left: 128 * tile.x,     
-              top: 128 * tile.y
+              left: 138 * tile.x,     
+              top: 138 * tile.y
             })
             .load(function() {
               this.width = this.width/4;
@@ -163,12 +192,42 @@
         });
     </script>
 
+    <script id="example3" type="example">
+    //https://www.rijksmuseum.nl/api/nl/collection?q=nachtwacht&key=__MASTER_KEY__
+      function search(query) {
+        return $.ajax({ 
+          url :"https://www.rijksmuseum.nl/api/nl/collection?q=Q&key=fpGQTuED&format=jsonp".replace("Q", query),
+            dataType : "jsonp",
+            callback : "callback"
+          });
+      }
+
+      search($("#query"))
+        .done(function(results) {
+            console.log(results);
+
+            $.each(results.artObjects, function(key, object) {
+                console.log(object);
+                var row = $("#example3-container")[0].insertRow();
+
+                var fields = [$("<img>").attr("src", object.webImage.url.replace("s0", "s128")), object.title ];
+
+                $.each(fields, function(i, item) {
+                  $(row.insertCell(row.cells.length)).html(item);
+                });
+            })
+        });
+
+
+    </script>
+
     <script>
       $("code[data-code]").each(function(i,el){
           $(el).text($($(el).data("code")).text());
       })
 
-      $("[data-action=run]").click(function(){
+      $("[data-action=run]").click(function(evt){
+        evt.preventDefault();
         var $button = $(this);
         eval ($($button.data("code")).text());
         $button.attr('disabled', 'disabled').text("executing...");
