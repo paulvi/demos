@@ -199,9 +199,9 @@
     </script>
 
     <script id="example3" type="example">
-      // search the collection using a JSONP call
+      // search the collection using a JSON call
       function search(query) {
-        return $.getJSON("https://www.rijksmuseum.nl/api/en/collection?q=Q&key=fpGQTuED&format=json".replace("Q", query));
+        return $.getJSON("https://www.rijksmuseum.nl/api/nl/collection?q=Q&key=fpGQTuED&format=json".replace("Q", query));
       }
 
       // creates a thumbnail image for the specified art object
