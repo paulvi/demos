@@ -130,16 +130,16 @@
     <script id="example1" type="example">
       // download the tiles info for a particular object.
       // ex. the objectNumber for the Nightwatch is 'SK-C-5'.
-      function loadTileInfo(objectNumber) {
+      function loadTileInfo(objectNumber, callback) {
         return $.ajax({
-          url:"https://www.rijksmuseum.nl/api/nl/collection/OBJECT_NUMBER/tiles?format=json&key=fpGQTuED"
+          url:"https://www.rijksmuseum.nl/api/nl/collection/OBJECT_NUMBER/tiles?format=jsonp&key=fpGQTuED"
             .replace("OBJECT_NUMBER", objectNumber.toUpperCase()),
-	  dataType: "jsonp"
+	    dataType: "jsonp",
+	    callback: callback
         });
       }
       // load them tiles
-      loadTileInfo("sk-c-5")
-        .done(function(data) {
+      loadTileInfo("sk-c-5", function(data) {
           // select a zoom level 
           var level = data.levels[0];
 
@@ -154,18 +154,18 @@
     <script id="example2" type="example">
       // download the tiles info for a particular object.
       // ex. the objectNumber for the Nightwatch is 'SK-C-5'.
-      function loadTileInfo(objectNumber) {
+      function loadTileInfo(objectNumber, callback) {
 	//tilesinfo only supports jsonp      
         return $.ajax({
           url: "https://www.rijksmuseum.nl/api/nl/collection/OBJECT_NUMBER/tiles?format=jsonp&key=fpGQTuED"
 	    .replace("OBJECT_NUMBER",objectNumber.toUpperCase()),
-	  dataType: "jsonp"
+	    dataType: "jsonp",
+	    callback: callback
         });
       }
 
       // load them tiles
-      loadTileInfo("sk-c-5")
-        .done(function(data) { 
+      loadTileInfo("sk-c-5", function(data) { 
           // First, select the desired level
           var level = data.levels[0];
           
