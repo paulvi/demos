@@ -130,16 +130,13 @@
     <script id="example1" type="example">
       // download the tiles info for a particular object.
       // ex. the objectNumber for the Nightwatch is 'SK-C-5'.
-      function loadTileInfo(objectNumber, callback) {
-        return $.ajax({
-          url:"https://www.rijksmuseum.nl/api/nl/collection/OBJECT_NUMBER/tiles?format=jsonp&key=fpGQTuED"
-            .replace("OBJECT_NUMBER", objectNumber.toUpperCase()),
-	    dataType: "jsonp",
-	    callback: callback
-        });
+      function loadTileInfo(objectNumber) {
+        return $.getJSON("https://www.rijksmuseum.nl/api/nl/collection/OBJECT_NUMBER/tiles?format=jsonp&key=fpGQTuED"
+            .replace("OBJECT_NUMBER", objectNumber.toUpperCase()));
       }
       // load them tiles
-      loadTileInfo("sk-c-5", function(data) {
+      loadTileInfo("sk-c-5")
+        .done(function(data) {
           // select a zoom level 
           var level = data.levels[0];
 
@@ -154,18 +151,16 @@
     <script id="example2" type="example">
       // download the tiles info for a particular object.
       // ex. the objectNumber for the Nightwatch is 'SK-C-5'.
-      function loadTileInfo(objectNumber, callback) {
-	//tilesinfo only supports jsonp      
-        return $.ajax({
-          url: "https://www.rijksmuseum.nl/api/nl/collection/OBJECT_NUMBER/tiles?format=jsonp&key=fpGQTuED"
-	    .replace("OBJECT_NUMBER",objectNumber.toUpperCase()),
-	    dataType: "jsonp",
-	    callback: callback
-        });
+      function loadTileInfo(objectNumber) {
+         //tilesinfo only supports json
+        return $.getJSON("https://www.rijksmuseum.nl/api/nl/collection/OBJECT_NUMBER/tiles?format=jsonp&key=fpGQTuED"
+           .replace("OBJECT_NUMBER",objectNumber.toUpperCase())
+        );
       }
 
       // load them tiles
-      loadTileInfo("sk-c-5", function(data) { 
+      loadTileInfo("sk-c-5")
+        .done(function(data) { 
           // First, select the desired level
           var level = data.levels[0];
           
@@ -220,21 +215,26 @@
       search($("#query").val())
         .done(function(results) {
           $("#example3-container").empty();
-          
+
+          var $table = $("#example3-container");
+          $table.html("");
+
           // create a row for each art object found
           $.each(results.artObjects, function(index, object) {
-              
-            var row = $("#example3-container")[0].insertRow();
+            console.log(object);   
+          
+            var $row = $('<tr class="child"><td>' 
+              + object.objectNumber
+              +'</td><td class="thumbnail">'
+              +'</td><td>'
+              + object.title
+              +'</td></tr>').appendTo($table);
+            
+            $row.find(".thumbnail").append(thumbnail(object));
 
             // make each row clickable, navigating to the relevant page on the Rijksmuseum website
-            $(row).click(function() {
+            $row.on("click", function() {
               document.location = object.links.web;
-            });
-
-            // create the cells in the table
-            var columns = [object.objectNumber, thumbnail(object), object.title];
-            $.each(columns, function(i, item) {
-              $(row.insertCell(row.cells.length)).html(item);
             });
           })
         });
